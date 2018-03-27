@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,12 +21,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         if (savedInstanceState == null){
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.ventanaJuego, new VentanaAhorcado())
                     .commit();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        palabraOculta = escogePalabra();
+        String barras = "";
+        for (int i = 0; i < palabraOculta.length(); i++) {
+            barras += "_ ";
+        }
+        ((TextView) findViewById(R.id.palabraConGuiones)).setText(barras);
     }
 
     public void botonPulsado(View vista){
@@ -43,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i=0; i<palabraOculta.length(); i++){
             if (palabraOculta.charAt(i) == letra.charAt(0)){
-                //TODO quita el guión bajo de la letra correspondiente
                 palabraConGuiones = palabraConGuiones.substring(0, 2*i)
                         + letra
                         + palabraConGuiones.substring(2*i+1);
@@ -70,5 +80,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    private String escogePalabra(){
+        String palabra = "CETYS";
+        String[] listaPalabras = {"hola","adios","esternocleidomastoideo","piña","CETYS"};
+        Random random = new Random();
+        palabra = listaPalabras[random.nextInt(listaPalabras.length)];
+        palabra = palabra.toUpperCase();
+        return palabra;
+    }
+
+
 
 }
